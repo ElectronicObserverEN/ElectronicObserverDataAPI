@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ElectronicObserverDataAPI/config.json
+/ElectronicObserverDataAPI/ElectronicObserverData.db
+/ElectronicObserverDataAPI/ElectronicObserverData.db-shm
+/ElectronicObserverDataAPI/ElectronicObserverData.db-wal
