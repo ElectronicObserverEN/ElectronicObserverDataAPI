@@ -14,6 +14,8 @@ public record QuestTranslationMissingModel
 
     [JsonPropertyName("description")] public string Desription { get; set; } = "";
 
+    [JsonPropertyName("state")] public IssueState IssueState { get; set; }
+
     [JsonIgnore] public int Id { get; set; }
 
     [JsonIgnore] public DateTime AddedOn { get; set; }

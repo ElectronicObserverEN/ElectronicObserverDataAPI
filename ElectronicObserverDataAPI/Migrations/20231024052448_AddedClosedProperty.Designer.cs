@@ -3,6 +3,7 @@ using System;
 using ElectronicObserverDataAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicObserverDataAPI.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231024052448_AddedClosedProperty")]
+    partial class AddedClosedProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0-preview.5.23280.1");
@@ -31,6 +34,10 @@ namespace ElectronicObserverDataAPI.Migrations
                     b.Property<DateTime>("AddedOn")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Closed")
+                        .HasColumnType("INTEGER")
+                        .HasAnnotation("Relational:JsonPropertyName", "closed");
+
                     b.Property<int>("DataVersion")
                         .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "data_version");
@@ -47,10 +54,6 @@ namespace ElectronicObserverDataAPI.Migrations
                     b.Property<int>("HelperId")
                         .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "helperId");
-
-                    b.Property<int>("IssueState")
-                        .HasColumnType("INTEGER")
-                        .HasAnnotation("Relational:JsonPropertyName", "state");
 
                     b.Property<string>("SoftwareVersion")
                         .IsRequired()
@@ -75,6 +78,10 @@ namespace ElectronicObserverDataAPI.Migrations
                         .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "api_id");
 
+                    b.Property<bool>("Closed")
+                        .HasColumnType("INTEGER")
+                        .HasAnnotation("Relational:JsonPropertyName", "closed");
+
                     b.Property<int>("DataVersion")
                         .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "data_version");
@@ -83,10 +90,6 @@ namespace ElectronicObserverDataAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "description");
-
-                    b.Property<int>("IssueState")
-                        .HasColumnType("INTEGER")
-                        .HasAnnotation("Relational:JsonPropertyName", "state");
 
                     b.Property<string>("SoftwareVersion")
                         .IsRequired()

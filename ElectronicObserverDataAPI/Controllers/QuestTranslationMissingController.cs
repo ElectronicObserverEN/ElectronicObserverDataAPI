@@ -18,9 +18,11 @@ namespace ElectronicObserverDataAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public IEnumerable<QuestTranslationMissingModel> Get(DateTime? start)
+        public IEnumerable<QuestTranslationMissingModel> Get(DateTime? start, IssueState? issueState)
         {
-            return DbContext.QuestTranslationMissing.Where(issue => start == null || issue.AddedOn >= start);
+            return DbContext.QuestTranslationMissing
+                .Where(issue => start == null || issue.AddedOn >= start)
+                .Where(issue => issueState == null || issue.IssueState == issueState);
         }
 
         [HttpPost]
@@ -29,6 +31,24 @@ namespace ElectronicObserverDataAPI.Controllers
             questData.AddedOn = DateTime.UtcNow;
             DbContext.QuestTranslationMissing.Add(questData);
             DbContext.SaveChanges();
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("{id}/closeIssue")]
+        public ActionResult CloseIssue(int id)
+        {
+            QuestTranslationMissingModel? quest = DbContext.QuestTranslationMissing.Find(id);
+
+            if (quest is null)
+            {
+                return NotFound();
+            }
+
+            quest.IssueState = IssueState.Closed;
+            DbContext.SaveChanges();
+
+            return Ok();
         }
     }
 }
