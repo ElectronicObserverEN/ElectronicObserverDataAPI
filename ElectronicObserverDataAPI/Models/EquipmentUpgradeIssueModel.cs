@@ -18,7 +18,7 @@ public record EquipmentUpgradeIssueModel
 
     [JsonPropertyName("state")] public IssueState IssueState { get; set; }
 
-    [JsonIgnore] public int Id { get; set; }
+    [JsonPropertyName("id")] public int Id { get; set; }
 
     [JsonIgnore] public DateTime AddedOn { get; set; }
 

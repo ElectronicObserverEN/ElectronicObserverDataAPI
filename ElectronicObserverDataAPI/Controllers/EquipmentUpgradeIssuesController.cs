@@ -40,7 +40,7 @@ namespace ElectronicObserverDataAPI.Controllers
         public ActionResult CloseIssue(int id)
         {
             EquipmentUpgradeIssueModel? issue = DbContext.EquipmentUpgradeIssues.Find(id);
-
+            
             if (issue is null)
             {
                 return NotFound();
