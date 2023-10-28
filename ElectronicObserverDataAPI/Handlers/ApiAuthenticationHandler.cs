@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
@@ -34,7 +35,10 @@ public class ApiAuthenticationHandler : AuthenticationHandler<AuthenticationSche
             if (config is null) return AuthenticateResult.Fail("Secret doesn't exist");
             if (!config.ContainsKey("secret")) return AuthenticateResult.Fail("Secret doesn't exist");
 
-            Secret = config["secret"];
+            Secret = $"{config["secret"]}:";
+            byte[]? plainTextBytes = Encoding.UTF8.GetBytes(Secret);
+            Secret = Convert.ToBase64String(plainTextBytes);
+            Secret = $"Basic {Secret}";
         }
         
         if (string.IsNullOrEmpty(Secret))
