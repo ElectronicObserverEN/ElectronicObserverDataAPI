@@ -5,8 +5,10 @@ namespace ElectronicObserverDataAPI.Database;
 
 public class ApiDbContext : DbContext
 {
+    // dotnet ef migrations add <name>
     public DbSet<EquipmentUpgradeIssueModel> EquipmentUpgradeIssues { get; set; }
     public DbSet<QuestTranslationMissingModel> QuestTranslationMissing { get; set; }
+    public DbSet<FitBonusIssueModel> FitBonusIssues { get; set; }
 
     public string DbPath => Path.Combine(Environment.CurrentDirectory, "ElectronicObserverData.db");
     
