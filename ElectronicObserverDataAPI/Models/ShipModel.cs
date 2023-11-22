@@ -18,13 +18,16 @@ public record ShipModel
 
 	[JsonPropertyName("armor")] public int Armor { get; init; }
 
-	[JsonPropertyName("evasion")] public int Evasion { get; init; }
+    [JsonPropertyName("evasion")] public int Evasion { get; init; }
+    [JsonPropertyName("evasionKnown")] public bool EvasionDetermined { get; init; }
 
-	[JsonPropertyName("asw")] public int ASW { get; init; }
+    [JsonPropertyName("asw")] public int ASW { get; init; }
+    [JsonPropertyName("aswKnown")] public bool ASWDetermined { get; init; }
 
-	[JsonPropertyName("los")] public int LOS { get; init; }
+    [JsonPropertyName("los")] public int LOS { get; init; }
+    [JsonPropertyName("losKnown")] public bool LOSDetermined { get; init; }
 
-	[JsonPropertyName("accuracy")] public int Accuracy { get; init; }
+    [JsonPropertyName("accuracy")] public int Accuracy { get; init; }
 
 	[JsonPropertyName("range")] public int Range { get; init; }
 
