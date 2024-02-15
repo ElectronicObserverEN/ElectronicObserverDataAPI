@@ -12,9 +12,10 @@ namespace ElectronicObserverDataAPI.Controllers
     {
         [HttpGet]
         [Authorize]
-        public IEnumerable<FitBonusIssueModel> Get(DateTime? start, IssueState? issueState, int skip = 0, int take = 20)
+        public PaginatedResultModel<FitBonusIssueModel> Get(DateTime? start, IssueState? issueState, int skip = 0,
+            int take = 20)
         {
-            return dbContext.FitBonusIssues
+            IEnumerable<FitBonusIssueModel> issues = dbContext.FitBonusIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => issueState == null || issue.IssueState == issueState)
                 .Skip(skip)
@@ -23,6 +24,12 @@ namespace ElectronicObserverDataAPI.Controllers
                 .Include(nameof(FitBonusIssueModel.ExpectedBonus))
                 .Include(nameof(FitBonusIssueModel.Equipments))
                 .Include(nameof(FitBonusIssueModel.Ship));
+
+            return new()
+            {
+                Results = issues,
+                TotalCount = dbContext.FitBonusIssues.Count(),
+            };
         }
 
         [HttpPost]
