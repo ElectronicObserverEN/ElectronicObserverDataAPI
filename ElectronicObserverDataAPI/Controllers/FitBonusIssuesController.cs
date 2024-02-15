@@ -12,11 +12,13 @@ namespace ElectronicObserverDataAPI.Controllers
     {
         [HttpGet]
         [Authorize]
-        public IEnumerable<FitBonusIssueModel> Get(DateTime? start, IssueState? issueState)
+        public IEnumerable<FitBonusIssueModel> Get(DateTime? start, IssueState? issueState, int skip = 0, int take = 20)
         {
             return dbContext.FitBonusIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => issueState == null || issue.IssueState == issueState)
+                .Skip(skip)
+                .Take(take)
                 .Include(nameof(FitBonusIssueModel.ActualBonus))
                 .Include(nameof(FitBonusIssueModel.ExpectedBonus))
                 .Include(nameof(FitBonusIssueModel.Equipments))
