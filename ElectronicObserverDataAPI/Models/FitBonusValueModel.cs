@@ -24,7 +24,9 @@ public record FitBonusValueModel
 
 	[JsonPropertyName("leng")] public int Range { get; init; }
 
-	public static FitBonusValueModel operator *(FitBonusValueModel a, int b) => new FitBonusValueModel()
+    [JsonPropertyName("baku")] public int Bombing { get; set; }
+
+    public static FitBonusValueModel operator *(FitBonusValueModel a, int b) => new FitBonusValueModel()
 	{
 		Firepower = a.Firepower * b,
 		Torpedo = a.Torpedo * b,
