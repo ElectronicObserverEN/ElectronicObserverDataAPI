@@ -28,7 +28,9 @@ namespace ElectronicObserverDataAPI.Controllers
             return new()
             {
                 Results = issues,
-                TotalCount = dbContext.FitBonusIssues.Count(),
+                TotalCount = dbContext.FitBonusIssues
+                    .Where(issue => start == null || issue.AddedOn >= start)
+                    .Count(issue => issueState == null || issue.IssueState == issueState),
             };
         }
 
