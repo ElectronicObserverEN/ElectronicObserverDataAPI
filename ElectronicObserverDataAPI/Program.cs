@@ -45,7 +45,14 @@ builder.Services.AddAuthentication("ApiAuthentication")
 using ApiDbContext db = new();
 db.Database.Migrate();
 
-builder.Services.AddDbContext<ApiDbContext>();
+builder.Services.AddDbContext<ApiDbContext>(); 
+
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(60);
+});
 
 var app = builder.Build();
 
@@ -55,9 +62,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
