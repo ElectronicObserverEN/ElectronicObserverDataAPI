@@ -3,6 +3,7 @@ using System;
 using ElectronicObserverDataAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicObserverDataAPI.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240622073122_SoftwareIssues")]
+    partial class SoftwareIssues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0-preview.5.23280.1");
@@ -298,19 +301,31 @@ namespace ElectronicObserverDataAPI.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "ship");
                 });
 
-            modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareExceptionModel", b =>
+            modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareIssueModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IssueState")
+                        .HasColumnType("INTEGER")
+                        .HasAnnotation("Relational:JsonPropertyName", "state");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "message");
 
-                    b.Property<int?>("SoftwareExceptionModelId")
+                    b.Property<int?>("SoftwareIssueModelId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SoftwareVersion")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "softwareVersion");
 
                     b.Property<string>("StackTrace")
                         .IsRequired()
@@ -324,39 +339,11 @@ namespace ElectronicObserverDataAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SoftwareExceptionModelId");
-
-                    b.ToTable("SoftwareExceptionModel");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "innerExceptions");
-                });
-
-            modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareIssueModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("AddedOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ExceptionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IssueState")
-                        .HasColumnType("INTEGER")
-                        .HasAnnotation("Relational:JsonPropertyName", "state");
-
-                    b.Property<string>("SoftwareVersion")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "softwareVersion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExceptionId");
+                    b.HasIndex("SoftwareIssueModelId");
 
                     b.ToTable("SoftwareIssues");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "innerExceptions");
                 });
 
             modelBuilder.Entity("ElectronicObserverDataAPI.Models.EquipmentModel", b =>
@@ -393,22 +380,11 @@ namespace ElectronicObserverDataAPI.Migrations
                     b.Navigation("Ship");
                 });
 
-            modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareExceptionModel", b =>
-                {
-                    b.HasOne("ElectronicObserverDataAPI.Models.SoftwareExceptionModel", null)
-                        .WithMany("InnerExceptions")
-                        .HasForeignKey("SoftwareExceptionModelId");
-                });
-
             modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareIssueModel", b =>
                 {
-                    b.HasOne("ElectronicObserverDataAPI.Models.SoftwareExceptionModel", "Exception")
-                        .WithMany()
-                        .HasForeignKey("ExceptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exception");
+                    b.HasOne("ElectronicObserverDataAPI.Models.SoftwareIssueModel", null)
+                        .WithMany("InnerExceptions")
+                        .HasForeignKey("SoftwareIssueModelId");
                 });
 
             modelBuilder.Entity("ElectronicObserverDataAPI.Models.FitBonusIssueModel", b =>
@@ -416,7 +392,7 @@ namespace ElectronicObserverDataAPI.Migrations
                     b.Navigation("Equipments");
                 });
 
-            modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareExceptionModel", b =>
+            modelBuilder.Entity("ElectronicObserverDataAPI.Models.SoftwareIssueModel", b =>
                 {
                     b.Navigation("InnerExceptions");
                 });

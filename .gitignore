@@ -365,3 +365,9 @@ FodyWeavers.xsd
 /ElectronicObserverDataAPI/ElectronicObserverData.db
 /ElectronicObserverDataAPI/ElectronicObserverData.db-shm
 /ElectronicObserverDataAPI/ElectronicObserverData.db-wal
+/ElectronicObserverDataAPI/Data/config.json
+/ElectronicObserverDataAPI/Data/ElectronicObserverData.db
+/ElectronicObserverDataAPI/Data/ElectronicObserverData.db-shm
+/ElectronicObserverDataAPI/Data/ElectronicObserverData.db-wal
+/ElectronicObserverDataAPI/Data/config.json
+/ElectronicObserverDataAPI/Data/ElectronicObserverData.db

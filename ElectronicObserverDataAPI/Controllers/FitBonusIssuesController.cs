@@ -1,4 +1,5 @@
 ﻿using ElectronicObserverDataAPI.Database;
+using ElectronicObserverDataAPI.Handlers;
 using ElectronicObserverDataAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace ElectronicObserverDataAPI.Controllers
         }
 
         [HttpPost]
+        [CheckForUserAgent]
         public void Post(FitBonusIssueModel issue)
         {
             issue.AddedOn = DateTime.UtcNow;

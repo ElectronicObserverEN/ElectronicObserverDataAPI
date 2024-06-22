@@ -8,31 +8,25 @@ namespace ElectronicObserverDataAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EquipmentUpgradeIssuesController : ControllerBase
+    public class SoftwareIssueController(ApiDbContext dbContext) : ControllerBase
     {
-        private ApiDbContext DbContext { get; }
+        private ApiDbContext DbContext { get; } = dbContext;
 
-        public EquipmentUpgradeIssuesController(ApiDbContext dbContext)
-        {
-            DbContext = dbContext;
-        }
-        
         [HttpGet]
         [Authorize]
-        public IEnumerable<EquipmentUpgradeIssueModel> Get(DateTime? start, IssueState? issueState)
+        public IEnumerable<SoftwareIssueModel> Get(DateTime? start, IssueState? issueState)
         {
-            return DbContext.EquipmentUpgradeIssues
+            return DbContext.SoftwareIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => issueState == null || issue.IssueState == issueState);
         }
 
         [HttpPost]
         [CheckForUserAgent]
-        public void Post(EquipmentUpgradeIssueModel issue)
+        public void Post(SoftwareIssueModel questData)
         {
-            issue.AddedOn = DateTime.UtcNow;
-            issue.IssueState = IssueState.Opened;
-            DbContext.EquipmentUpgradeIssues.Add(issue);
+            questData.AddedOn = DateTime.UtcNow;
+            DbContext.SoftwareIssues.Add(questData);
             DbContext.SaveChanges();
         }
 
@@ -41,8 +35,8 @@ namespace ElectronicObserverDataAPI.Controllers
         [Route("{id}/closeIssue")]
         public ActionResult CloseIssue(int id)
         {
-            EquipmentUpgradeIssueModel? issue = DbContext.EquipmentUpgradeIssues.Find(id);
-            
+            SoftwareIssueModel? issue = DbContext.SoftwareIssues.Find(id);
+
             if (issue is null)
             {
                 return NotFound();

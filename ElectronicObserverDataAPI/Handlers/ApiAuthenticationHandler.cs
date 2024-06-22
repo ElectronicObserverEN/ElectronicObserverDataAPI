@@ -9,7 +9,7 @@ namespace ElectronicObserverDataAPI.Handlers;
 
 public class ApiAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private string SecretLocation => Path.Combine(Environment.CurrentDirectory, "config.json");
+    private string SecretLocation => Path.Combine(Environment.CurrentDirectory, "Data", "config.json");
 
     private string? Secret { get; set; }
 
@@ -29,8 +29,8 @@ public class ApiAuthenticationHandler : AuthenticationHandler<AuthenticationSche
         {
             if (!File.Exists(SecretLocation)) return AuthenticateResult.Fail("Secret doesn't exist");
 
-            await using FileStream stream = File.OpenRead(SecretLocation);
-            Dictionary<string, string>? config = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(stream);
+            string file = await File.ReadAllTextAsync(SecretLocation);
+            Dictionary<string, string>? config = JsonSerializer.Deserialize<Dictionary<string, string>>(file);
 
             if (config is null) return AuthenticateResult.Fail("Secret doesn't exist");
             if (!config.ContainsKey("secret")) return AuthenticateResult.Fail("Secret doesn't exist");
