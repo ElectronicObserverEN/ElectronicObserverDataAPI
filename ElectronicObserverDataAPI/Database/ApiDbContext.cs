@@ -10,9 +10,11 @@ public class ApiDbContext : DbContext
     public DbSet<QuestTranslationMissingModel> QuestTranslationMissing { get; set; }
     public DbSet<FitBonusIssueModel> FitBonusIssues { get; set; }
     public DbSet<SoftwareIssueModel> SoftwareIssues { get; set; }
-    
+
+    private string DbPath => Path.Combine("Data", "ElectronicObserverData.db");
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite($"Data Source=Data\\ElectronicObserverData.db");
+        => optionsBuilder.UseSqlite($"Data Source={DbPath}");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
