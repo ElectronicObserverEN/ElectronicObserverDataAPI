@@ -30,6 +30,13 @@ namespace ElectronicObserverDataAPI.Controllers
         [CheckForUserAgent]
         public void Post(EquipmentUpgradeIssueModel issue)
         {
+            List<EquipmentUpgradeIssueModel> issues = DbContext.EquipmentUpgradeIssues
+                .Where(oldIssue => oldIssue.IssueState != IssueState.Closed)
+                .Where(oldIssue => oldIssue.HelperId == issue.HelperId)
+                .ToList();
+
+            if (issues.Contains(issue)) return;
+
             issue.AddedOn = DateTime.UtcNow;
             issue.IssueState = IssueState.Opened;
             DbContext.EquipmentUpgradeIssues.Add(issue);

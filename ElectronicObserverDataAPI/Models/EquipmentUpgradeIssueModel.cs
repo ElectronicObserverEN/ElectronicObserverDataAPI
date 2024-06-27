@@ -22,4 +22,27 @@ public record EquipmentUpgradeIssueModel
 
     [JsonIgnore] public DateTime AddedOn { get; set; }
 
+    public virtual bool Equals(EquipmentUpgradeIssueModel? other)
+    {
+        if (other is null) return false;
+
+        if (!other.ExpectedUpgrades.SequenceEqual(ExpectedUpgrades)) return false;
+        if (!other.ActualUpgrades.SequenceEqual(ActualUpgrades)) return false;
+        if (other.Day != Day) return false;
+        if (other.HelperId != HelperId) return false;
+
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = new HashCode();
+
+        hashCode.Add(ExpectedUpgrades);
+        hashCode.Add(ActualUpgrades);
+        hashCode.Add((int)Day);
+        hashCode.Add(HelperId);
+
+        return hashCode.ToHashCode();
+    }
 }
