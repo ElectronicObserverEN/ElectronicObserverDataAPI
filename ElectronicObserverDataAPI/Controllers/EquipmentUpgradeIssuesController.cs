@@ -19,10 +19,11 @@ namespace ElectronicObserverDataAPI.Controllers
         
         [HttpGet]
         [Authorize]
-        public IEnumerable<EquipmentUpgradeIssueModel> Get(DateTime? start, IssueState? issueState)
+        public IEnumerable<EquipmentUpgradeIssueModel> Get(DateTime? start, IssueState? issueState, int? startId)
         {
             return DbContext.EquipmentUpgradeIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
+                .Where(issue => startId == null || issue.Id > startId)
                 .Where(issue => issueState == null || issue.IssueState == issueState);
         }
 
@@ -59,6 +60,17 @@ namespace ElectronicObserverDataAPI.Controllers
             DbContext.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("latest")]
+        public List<EquipmentUpgradeIssueModel> GetLatestIssue()
+        {
+            return DbContext.EquipmentUpgradeIssues
+                .OrderByDescending(d => d.AddedOn)
+                .Take(1)
+                .ToList();
         }
     }
 }
