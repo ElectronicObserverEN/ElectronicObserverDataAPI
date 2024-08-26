@@ -19,6 +19,7 @@ namespace ElectronicObserverDataAPI.Controllers
             IEnumerable<FitBonusIssueModel> issues = dbContext.FitBonusIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => issueState == null || issue.IssueState == issueState)
+                .OrderByDescending(issue => issue.AddedOn)
                 .Skip(skip)
                 .Take(take)
                 .Include(nameof(FitBonusIssueModel.ActualBonus))
