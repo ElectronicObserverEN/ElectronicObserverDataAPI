@@ -7,6 +7,7 @@ public class ApiDbContext : DbContext
 {
     // dotnet ef migrations add <name>
     public DbSet<EquipmentUpgradeIssueModel> EquipmentUpgradeIssues { get; set; }
+    public DbSet<EquipmentUpgradeCostIssueModel> EquipmentUpgradeCostIssues { get; set; }
     public DbSet<QuestTranslationMissingModel> QuestTranslationMissing { get; set; }
     public DbSet<FitBonusIssueModel> FitBonusIssues { get; set; }
     public DbSet<SoftwareIssueModel> SoftwareIssues { get; set; }
