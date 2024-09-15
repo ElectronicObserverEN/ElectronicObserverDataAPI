@@ -3,6 +3,7 @@ using ElectronicObserverDataAPI.Handlers;
 using ElectronicObserverDataAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElectronicObserverDataAPI.Controllers
 {
@@ -22,6 +23,12 @@ namespace ElectronicObserverDataAPI.Controllers
         public IEnumerable<EquipmentUpgradeCostIssueModel> Get(DateTime? start, IssueState? issueState, int? startId)
         {
             return DbContext.EquipmentUpgradeCostIssues
+                .Include(nameof(EquipmentUpgradeCostIssueModel.Actual))
+                .Include(nameof(EquipmentUpgradeCostIssueModel.Expected))
+                .Include("Actual.ConsumableDetail")
+                .Include("Expected.ConsumableDetail")
+                .Include("Actual.EquipmentDetail")
+                .Include("Expected.EquipmentDetail")
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => startId == null || issue.Id > startId)
                 .Where(issue => issueState == null || issue.IssueState == issueState);
@@ -41,6 +48,8 @@ namespace ElectronicObserverDataAPI.Controllers
             issue.AddedOn = DateTime.UtcNow;
             issue.IssueState = IssueState.Opened;
             DbContext.EquipmentUpgradeCostIssues.Add(issue);
+            DbContext.Add(issue.Actual);
+            DbContext.Add(issue.Expected);
             DbContext.SaveChanges();
         }
 
