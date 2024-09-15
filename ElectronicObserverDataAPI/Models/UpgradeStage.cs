@@ -3,6 +3,6 @@
 public enum UpgradeStage
 {
 	From0To5,
-	From6To7,
+	From6To9,
 	Conversion,
 }
