@@ -33,7 +33,7 @@ namespace ElectronicObserverDataAPI.Controllers
         {
             List<EquipmentUpgradeCostIssueModel> issues = DbContext.EquipmentUpgradeCostIssues
                 .Where(oldIssue => oldIssue.IssueState != IssueState.Closed)
-                .Where(oldIssue => oldIssue.HelperId == issue.HelperId)
+                .Where(oldIssue => oldIssue.EquipmentId == issue.EquipmentId)
                 .ToList();
 
             if (issues.Contains(issue)) return;
