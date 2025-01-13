@@ -13,11 +13,12 @@ namespace ElectronicObserverDataAPI.Controllers
     {
         [HttpGet]
         [Authorize]
-        public PaginatedResultModel<FitBonusIssueModel> Get(DateTime? start, IssueState? issueState, int skip = 0,
+        public PaginatedResultModel<FitBonusIssueModel> Get(DateTime? start, IssueState? issueState, int? startId, int skip = 0,
             int take = 20)
         {
             IEnumerable<FitBonusIssueModel> issues = dbContext.FitBonusIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
+                .Where(issue => startId == null || issue.Id > startId)
                 .Where(issue => issueState == null || issue.IssueState == issueState)
                 .OrderByDescending(issue => issue.AddedOn)
                 .Skip(skip)
@@ -32,6 +33,7 @@ namespace ElectronicObserverDataAPI.Controllers
                 Results = issues,
                 TotalCount = dbContext.FitBonusIssues
                     .Where(issue => start == null || issue.AddedOn >= start)
+                    .Where(issue => startId == null || issue.Id > startId)
                     .Count(issue => issueState == null || issue.IssueState == issueState),
             };
         }
