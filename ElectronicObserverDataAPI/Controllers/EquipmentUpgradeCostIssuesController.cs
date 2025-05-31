@@ -20,7 +20,7 @@ namespace ElectronicObserverDataAPI.Controllers
         
         [HttpGet]
         [Authorize]
-        public IEnumerable<EquipmentUpgradeCostIssueModel> Get(DateTime? start, IssueState? issueState, int? startId)
+        public IEnumerable<EquipmentUpgradeCostIssueModel> Get(DateTime? start, IssueState? issueState, int? startId, int? minimumDataVersion)
         {
             return DbContext.EquipmentUpgradeCostIssues
                 .Include(nameof(EquipmentUpgradeCostIssueModel.Actual))
@@ -31,6 +31,7 @@ namespace ElectronicObserverDataAPI.Controllers
                 .Include("Expected.EquipmentDetail")
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => startId == null || issue.Id > startId)
+                .Where(issue => minimumDataVersion == null || issue.DataVersion >= minimumDataVersion)
                 .Where(issue => issueState == null || issue.IssueState == issueState);
         }
 
@@ -38,6 +39,10 @@ namespace ElectronicObserverDataAPI.Controllers
         [CheckForUserAgent]
         public void Post(EquipmentUpgradeCostIssueModel issue)
         {
+            // May 30th 2025 : Extra cost introduced
+            // Implemented in EO after 5.3.13.0
+            if (issue.EquipmentId is 64 or 158 && new Version(issue.SoftwareVersion) <= new Version("5.3.13.0")) return;
+
             List<EquipmentUpgradeCostIssueModel> issues = DbContext.EquipmentUpgradeCostIssues
                 .Where(oldIssue => oldIssue.IssueState != IssueState.Closed)
                 .Where(oldIssue => oldIssue.EquipmentId == issue.EquipmentId)

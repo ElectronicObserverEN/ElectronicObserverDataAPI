@@ -19,11 +19,12 @@ namespace ElectronicObserverDataAPI.Controllers
         
         [HttpGet]
         [Authorize]
-        public IEnumerable<EquipmentUpgradeIssueModel> Get(DateTime? start, IssueState? issueState, int? startId)
+        public IEnumerable<EquipmentUpgradeIssueModel> Get(DateTime? start, IssueState? issueState, int? startId, int? minimumDataVersion)
         {
             return DbContext.EquipmentUpgradeIssues
                 .Where(issue => start == null || issue.AddedOn >= start)
                 .Where(issue => startId == null || issue.Id > startId)
+                .Where(issue => minimumDataVersion == null || issue.DataVersion >= minimumDataVersion)
                 .Where(issue => issueState == null || issue.IssueState == issueState);
         }
 
